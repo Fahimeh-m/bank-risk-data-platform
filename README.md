@@ -8,8 +8,8 @@ All data in this project is synthetic. I generate it myself with Python, so no r
 ## Status
 
 - [x] Day 1: Synthetic bank data generated in Python and uploaded to Azure Data Lake Storage
+- [x] Azure SQL Database with tables for customers, loans and transactions
 - [ ] Git on my own computer for this repository
-- [ ] Azure SQL Database with tables for customers, loans and transactions
 - [ ] Azure Data Factory pipeline that copies the files from the data lake into the database
 - [ ] Data-quality checks in SQL
 - [ ] Credit-risk model (probability of default) explained with SHAP
@@ -32,6 +32,12 @@ The random seed is fixed, so restarting and running the notebook gives exactly t
 
 On Azure I created a separate resource group for this project, a storage account with Data Lake Storage Gen2, and a `raw` container. I uploaded the three files there.
 
+## Day 2 (29 October 2026)
+
+I created an Azure SQL Database on the free offer, with overage billing disabled, so it pauses instead of charging when the monthly free limit is used up. It is in Sweden Central, because my free subscription had no SQL capacity in Norway East. Sign-in uses Microsoft Entra only, so there are no database passwords to store or leak.
+
+I wrote the tables in T-SQL (`sql/01_create_tables.sql`). Each table has a primary key, and loans and transactions have foreign keys to customers, so the database itself rejects duplicate IDs and rows for customers that don't exist. The tables are empty for now. Azure Data Factory will fill them on Day 3.
+
 ## Data
 
 | Table | Rows | What it holds |
@@ -44,7 +50,9 @@ On Azure I created a separate resource group for this project, a storage account
 
 - `01_generate_bank_data.ipynb`: creates the synthetic data
 - `data/sample/`: the first 1,000 rows of each table
+- `sql/`: SQL scripts for the Azure SQL Database
+- `docs/azure/`: screenshots and notes of the Azure setup, day by day
 
 ## Tools so far
 
-Python (pandas, NumPy), Jupyter, Azure Data Lake Storage Gen2, GitHub
+Python (pandas, NumPy), Jupyter, Azure Data Lake Storage Gen2, Azure SQL Database, T-SQL, GitHub
