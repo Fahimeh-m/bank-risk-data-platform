@@ -24,7 +24,7 @@ The `raw` container with the three CSV files from the notebook: customers, loans
 ## Day 2 (29 October 2026)
 
 ### SQL server and database
-![Resource group on Day 2](04_resource_group_day2.png)
+![Resource group on Day 2](04_resource_group_2.png)
 
 A logical SQL server, `sql-bank-risk-fm`, and a database, `sqldb-bank-risk`, in the same resource group. The server holds the login and network rules, and the database holds the data.
 
