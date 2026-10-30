@@ -1,0 +1,1 @@
+ALTER TABLE dbo.loans ALTER COLUMN defaulted TINYINT NOT NULL;
