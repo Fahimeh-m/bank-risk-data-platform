@@ -9,8 +9,8 @@ All data in this project is synthetic. I generate it myself with Python, so no r
 
 - [x] Day 1: Synthetic bank data generated in Python and uploaded to Azure Data Lake Storage
 - [x] Azure SQL Database with tables for customers, loans and transactions
+- [x] Azure Data Factory pipeline that copies the files from the data lake into the database
 - [ ] Git on my own computer for this repository
-- [ ] Azure Data Factory pipeline that copies the files from the data lake into the database
 - [ ] Data-quality checks in SQL
 - [ ] Credit-risk model (probability of default) explained with SHAP
 - [ ] Expected loss for each loan
@@ -38,6 +38,16 @@ I created an Azure SQL Database on the free offer, with overage billing disabled
 
 I wrote the tables in T-SQL (`sql/01_create_tables.sql`). Each table has a primary key, and loans and transactions have foreign keys to customers, so the database itself rejects duplicate IDs and rows for customers that don't exist. The tables are empty for now. Azure Data Factory will fill them on Day 3.
 
+## Day 3 (30 October 2026)
+
+I built an Azure Data Factory pipeline that loads the three CSV files from the data lake into the database. Data Factory signs in with its own managed identity, with read-only access to the storage account and only read and write roles in the database, so there are no keys or passwords anywhere.
+
+Customers load first, and loans and transactions load in parallel only after that succeeds, because of the foreign keys. Before loading, the pipeline empties the tables in reverse order, so running it again gives the same result instead of duplicates.
+
+It took three runs. The first failed because the serverless database was still waking up, so I added retries. The second failed on loans, because Data Factory couldn't turn the text `0` into a `BIT`. I left the raw file as it is and changed the column to `TINYINT` instead. The third run loaded everything in about a minute and a half, and a row count matched the source exactly: 20,000 customers, 12,000 loans and 801,528 transactions.
+
+Screenshots and the full story are in `docs/azure/README.md`, and the pipeline definition is in `adf/`.
+
 ## Data
 
 | Table | Rows | What it holds |
@@ -50,9 +60,10 @@ I wrote the tables in T-SQL (`sql/01_create_tables.sql`). Each table has a prima
 
 - `01_generate_bank_data.ipynb`: creates the synthetic data
 - `data/sample/`: the first 1,000 rows of each table
-- `sql/`: SQL scripts for the Azure SQL Database
+- `sql/`: SQL scripts for the Azure SQL Database, numbered in the order they were run
+- `adf/`: the Azure Data Factory pipeline definition
 - `docs/azure/`: screenshots and notes of the Azure setup, day by day
 
 ## Tools so far
 
-Python (pandas, NumPy), Jupyter, Azure Data Lake Storage Gen2, Azure SQL Database, T-SQL, GitHub
+Python (pandas, NumPy), Jupyter, Azure Data Lake Storage Gen2, Azure SQL Database, T-SQL, Azure Data Factory, Microsoft Entra ID (managed identity), GitHub
