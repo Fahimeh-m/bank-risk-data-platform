@@ -85,4 +85,19 @@ It took three runs:
 
 `sql/04_row_counts.sql` counts the rows in each table: 20,000 customers, 12,000 loans and 801,528 transactions, the same as the source files. Even after three runs there are no duplicates, thanks to the pre-copy script.
 
-Next: data-quality checks in SQL.
+## Day 4 (2 November 2026)
+
+### Data-quality checks
+
+![Check for loans and transactions without a customer](12_data_quality_checks.png)
+
+After the load, I ran my own checks on the data in Azure SQL Database. The code and results are in `sql/05_data_quality_checks.sql`.
+
+What I checked:
+- Defaults: 732 of the 12,000 loans, the same as in the data I generated.
+- Loans: no zero or negative amounts, rates, terms or monthly payments, and no interest rate of 100% or more.
+- Customers: no one under 18 or over 100, and no zero or negative income.
+- Transactions: amounts from 0.19 to 49,754.48 EUR, dated 1 April to 30 September 2026.
+- Loans and transactions without a customer: none.
+
+I didn't run a separate check for empty values or duplicate IDs, because the columns are `NOT NULL` and the primary keys already block them.
