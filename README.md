@@ -10,13 +10,13 @@ All data in this project is synthetic. I generate it myself with Python, so no r
 - [x] Day 1: Synthetic bank data generated in Python and uploaded to Azure Data Lake Storage
 - [x] Azure SQL Database with tables for customers, loans and transactions
 - [x] Azure Data Factory pipeline that copies the files from the data lake into the database
+- [x] Data-quality checks in SQL
+- [x] Notes and screenshots of the Azure part, since it runs on the Azure free credit
 - [ ] Git on my own computer for this repository
-- [ ] Data-quality checks in SQL
 - [ ] Credit-risk model (probability of default) explained with SHAP
 - [ ] Expected loss for each loan
 - [ ] Anti-money-laundering rules in SQL, checked against the planted patterns
 - [ ] Power BI report for credit risk and suspicious activity
-- [ ] Notes and screenshots of the Azure part, since it runs on the Azure free credit
 
 ## Day 1 (28 October 2026)
 
@@ -47,6 +47,12 @@ Customers load first, and loans and transactions load in parallel only after tha
 It took three runs. The first failed because the serverless database was still waking up, so I added retries. The second failed on loans, because Data Factory couldn't turn the text `0` into a `BIT`. I left the raw file as it is and changed the column to `TINYINT` instead. The third run loaded everything in about a minute and a half, and a row count matched the source exactly: 20,000 customers, 12,000 loans and 801,528 transactions.
 
 Screenshots and the full story are in `docs/azure/README.md`, and the pipeline definition is in `adf/`.
+
+## Day 4 (2 November 2026)
+
+I checked the loaded data in Azure SQL Database with my own SQL queries. The default count matched the data I generated: 732 of the 12,000 loans. I found no invalid loan values, no customers with an out-of-range age or a zero or negative income, and no loans or transactions without a customer. Transaction amounts run from 0.19 to 49,754.48 euros, and the dates cover 1 April to 30 September 2026.
+
+The checks and their results are in `sql/05_data_quality_checks.sql`.
 
 ## Data
 
