@@ -12,7 +12,7 @@ All data in this project is synthetic. I generate it myself with Python, so no r
 - [x] Azure Data Factory pipeline that copies the files from the data lake into the database
 - [x] Data-quality checks in SQL
 - [x] Notes and screenshots of the Azure part, since it runs on the Azure free credit
-- [ ] Git on my own computer for this repository
+- [x] Git on my own computer for this repository
 - [ ] Credit-risk model (probability of default) explained with SHAP
 - [ ] Expected loss for each loan
 - [ ] Anti-money-laundering rules in SQL, checked against the planted patterns
