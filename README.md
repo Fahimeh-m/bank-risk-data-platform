@@ -72,4 +72,4 @@ The checks and their results are in `sql/05_data_quality_checks.sql`.
 
 ## Tools so far
 
-Python (pandas, NumPy), Jupyter, Azure Data Lake Storage Gen2, Azure SQL Database, T-SQL, Azure Data Factory, Microsoft Entra ID (managed identity), GitHub
+Python (pandas, NumPy), Jupyter, Azure Data Lake Storage Gen2, Azure SQL Database, T-SQL, Azure Data Factory, Microsoft Entra ID (managed identity), Git, GitHub
